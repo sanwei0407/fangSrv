@@ -36,7 +36,7 @@ module.exports = app => {
     },
     imgs: {
       type: DataTypes.TEXT,
-      allowNull: false
+      allowNull: true
     },
     createdAt: {
       type: DataTypes.DATE,
@@ -45,6 +45,14 @@ module.exports = app => {
     updatedAt: {
       type: DataTypes.DATE,
       allowNull: false
+    },
+    dianFee: {
+      type: DataTypes.INTEGER(11),
+      allowNull: true
+    },
+    waterFee: {
+      type: DataTypes.INTEGER(11),
+      allowNull: true
     }
   }, {
     tableName: 'build'

@@ -14,7 +14,7 @@ module.exports = app => {
   router.post(version + '/build/update', controller.build.update); // 修改建筑物
   router.post(version + '/build/buildInfo', controller.build.buildInfo); // 获取单个建筑物信息
   router.post(version + '/build/queryBuild', controller.build.queryBuild); // 获取多个建筑物信息
-  
+
   // 房间
   router.post(version + '/room/add', controller.room.add); // 添加房间
   router.post(version + '/room/remove', controller.room.remove); // 删除房间
@@ -47,7 +47,9 @@ module.exports = app => {
   router.post(version + '/user/queryBuild', controller.user.queryBuild); // 获取多个账单信息
 
 
+  // 工具模块
+  router.post(version + '/common/bdSearch',controller.common.bdSearch) // 关键字检索地址
 
 
-  
+
 };

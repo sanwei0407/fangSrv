@@ -56,11 +56,11 @@ module.exports = app => {
     },
     imgs: {
       type: DataTypes.TEXT,
-      allowNull: false
+      allowNull: true
     },
     desc: {
       type: DataTypes.STRING(255),
-      allowNull: false
+      allowNull: true
     },
     createdAt: {
       type: DataTypes.DATE,
@@ -69,6 +69,26 @@ module.exports = app => {
     updatedAt: {
       type: DataTypes.DATE,
       allowNull: false
+    },
+    monthFee: {
+      type: DataTypes.INTEGER(11),
+      allowNull: true
+    },
+    promiseFee: {
+      type: DataTypes.INTEGER(11),
+      allowNull: true
+    },
+    mj: {
+      type: DataTypes.INTEGER(11),
+      allowNull: true
+    },
+    rooms: {
+      type: DataTypes.INTEGER(11),
+      allowNull: true
+    },
+    ting: {
+      type: DataTypes.INTEGER(11),
+      allowNull: true
     }
   }, {
     tableName: 'rooms'

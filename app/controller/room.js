@@ -11,10 +11,10 @@ class BuildController extends Controller {
     const { ctx } = this;
     const uid = 1; // todo 以后的uid 通过token解密获取
 
-    const { 
-      name, buildId, roomNum, 
+    const {
+      name, buildId, roomNum,
       floor, hasAc, hasBx,
-       hasXyj,hasWifi,hasTv,
+       hasXyj,hasWifi,hasTv,mj,ting,rooms,monthFee,promiseFee,
        hasRsq,imgs,desc } = ctx.request.body; // 得到post请求的body参数
 
     // 数据过滤
@@ -25,17 +25,18 @@ class BuildController extends Controller {
     try {
 
     // 确保同一个buildId下 roomNum 唯一
-      const one  = await ctx.model.Room.findOne({
+      const one  = await ctx.model.Rooms.findOne({
         where:{
           buildId,
           roomNum,
+          mj,ting,rooms,monthFee,promiseFee,
         }
       })
       if(one) return ctx.body = { success: false, info: '当前物业下已经有相同的房间编号' };
 
 
-      await ctx.model.Room.create({
-        name, buildId, roomNum, 
+      await ctx.model.Rooms.create({
+        name, buildId, roomNum,
         floor, hasAc, hasBx,
         hasXyj,hasWifi,hasTv,
         hasRsq,imgs,desc,uid
@@ -44,6 +45,7 @@ class BuildController extends Controller {
       ctx.body = { success: true, info: '创建成功' };
 
     } catch (e) {
+      console.log('eee',e)
       ctx.body = { success: false, info: '添加失败' };
     }
 
@@ -58,7 +60,7 @@ class BuildController extends Controller {
     if (!roomId) return ctx.body = { success: false, info: 'roomId不能为空' };
 
     try {
-      await ctx.model.Room.destory({
+      await ctx.model.Rooms.destory({
         where: {
           roomId,
         },
@@ -83,7 +85,7 @@ class BuildController extends Controller {
 
 
     try {
-      await ctx.model.Room.update(updateData, {
+      await ctx.model.Rooms.update(updateData, {
         where: {
           roomId,
         },
@@ -103,7 +105,7 @@ class BuildController extends Controller {
     const { roomId } = ctx.request.body;
     if (!roomId) return ctx.body = { success: false, info: 'roomId不能为空' };
     try {
-      const one = await ctx.model.Room.findByPk(roomId);
+      const one = await ctx.model.Rooms.findByPk(roomId);
       ctx.body = { success: true, data: one, info: '查询成功' };
     } catch (e) {
       ctx.body = { success: false, info: '查询失败' };
@@ -125,11 +127,22 @@ class BuildController extends Controller {
     if (buildId) queryData.buildId = buildId;
     if (roomNum) queryData.roomNum = { [ Op.like]: `${roomNum}%` };
 
+
     try {
-      const all = await ctx.model.Room.findAndCountAll({
+      await ctx.model.Rooms.hasMany(ctx.model.Live,{ foreignKey:'roomId',targetKey:'roomId' })
+      const all = await ctx.model.Rooms.findAndCountAll({
         where: queryData,
         offset, // 查询偏移量(起点)
         limit, // 查询的返回的记录
+        include: [
+          {
+            model: ctx.model.Live,
+            // required: false,
+            // where: {
+            //   status:1
+            // }
+          }
+        ]
       });
       ctx.body = { success: true, data: all, info: '查询成功' };
     } catch (e) {

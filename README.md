@@ -9,6 +9,7 @@
 - npm i egg-redis 
 - npm i egg-sms 
 - npm i egg-oss
+- npm i ali-oss
 
 
 ## 在package.json文件当中声明有一个 scripts 

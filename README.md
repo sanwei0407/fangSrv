@@ -6,6 +6,9 @@
 - npm i mysql2 node当中的mysql链接的驱动
 - npm i utility 工具包  主要是用来实现md5加密
 - npm i egg-sequelize-auto  -g  全局安装  用来根据我们的数据库实际的表来生成model
+- npm i egg-redis 
+- npm i egg-sms 
+- npm i egg-oss
 
 
 ## 在package.json文件当中声明有一个 scripts 

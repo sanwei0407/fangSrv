@@ -48,8 +48,10 @@ module.exports = app => {
 
 
   // 工具模块
-  router.post(version + '/common/bdSearch',controller.common.bdSearch) // 关键字检索地址
-
+  router.post(version + '/common/bdSearch', controller.common.bdSearch); // 关键字检索地址
+  router.post(version + '/common/test', controller.common.test);
+  router.post(version + '/common/upload', controller.common.upload); // 图片上传
+  router.post(version + '/common/getCode', controller.common.getCode); // 获取验证码
 
 
 };

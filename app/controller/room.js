@@ -14,8 +14,8 @@ class BuildController extends Controller {
     const {
       name, buildId, roomNum,
       floor, hasAc, hasBx,
-       hasXyj,hasWifi,hasTv,mj,ting,rooms,monthFee,promiseFee,
-       hasRsq,imgs,desc } = ctx.request.body; // 得到post请求的body参数
+      hasXyj, hasWifi, hasTv, mj, ting, rooms, monthFee, promiseFee,
+      hasRsq, imgs, desc } = ctx.request.body; // 得到post请求的body参数
 
     // 数据过滤
     if (!name) return ctx.body = { success: false, info: 'name不能为空' };
@@ -24,28 +24,28 @@ class BuildController extends Controller {
 
     try {
 
-    // 确保同一个buildId下 roomNum 唯一
-      const one  = await ctx.model.Rooms.findOne({
-        where:{
+      // 确保同一个buildId下 roomNum 唯一
+      const one = await ctx.model.Rooms.findOne({
+        where: {
           buildId,
           roomNum,
-          mj,ting,rooms,monthFee,promiseFee,
-        }
-      })
-      if(one) return ctx.body = { success: false, info: '当前物业下已经有相同的房间编号' };
+          mj, ting, rooms, monthFee, promiseFee,
+        },
+      });
+      if (one) return ctx.body = { success: false, info: '当前物业下已经有相同的房间编号' };
 
 
       await ctx.model.Rooms.create({
         name, buildId, roomNum,
         floor, hasAc, hasBx,
-        hasXyj,hasWifi,hasTv,
-        hasRsq,imgs,desc,uid
+        hasXyj, hasWifi, hasTv,
+        hasRsq, imgs, desc, uid,
       });
 
       ctx.body = { success: true, info: '创建成功' };
 
     } catch (e) {
-      console.log('eee',e)
+      console.log('eee', e);
       ctx.body = { success: false, info: '添加失败' };
     }
 
@@ -60,7 +60,7 @@ class BuildController extends Controller {
     if (!roomId) return ctx.body = { success: false, info: 'roomId不能为空' };
 
     try {
-      await ctx.model.Rooms.destory({
+      await ctx.model.Rooms.destroy({
         where: {
           roomId,
         },
@@ -69,6 +69,7 @@ class BuildController extends Controller {
       ctx.body = { success: true, info: '删除成功' };
 
     } catch (e) {
+      console.log('e', e);
       ctx.body = { success: false, info: '删除失败' };
     }
   }
@@ -105,7 +106,12 @@ class BuildController extends Controller {
     const { roomId } = ctx.request.body;
     if (!roomId) return ctx.body = { success: false, info: 'roomId不能为空' };
     try {
-      const one = await ctx.model.Rooms.findByPk(roomId);
+
+      await ctx.model.Rooms.belongsTo(ctx.model.Build, { foreignKey: 'buildId', targetKey: 'buildId' });
+
+      const one = await ctx.model.Rooms.findByPk(roomId, {
+        include: ctx.model.Build,
+      });
       ctx.body = { success: true, data: one, info: '查询成功' };
     } catch (e) {
       ctx.body = { success: false, info: '查询失败' };
@@ -115,7 +121,7 @@ class BuildController extends Controller {
   // 查询多个 指定条件
   async queryBuild() {
     const { ctx, app } = this;
-    let { page, limit,buildId, name, roomNum } = ctx.request.body;
+    let { page, limit, buildId, name, roomNum } = ctx.request.body;
     const { Op } = app.Sequelize;
 
     page = page || 1;
@@ -129,7 +135,7 @@ class BuildController extends Controller {
 
 
     try {
-      await ctx.model.Rooms.hasMany(ctx.model.Live,{ foreignKey:'roomId',targetKey:'roomId' })
+      await ctx.model.Rooms.hasMany(ctx.model.Live, { foreignKey: 'roomId', targetKey: 'roomId' });
       const all = await ctx.model.Rooms.findAndCountAll({
         where: queryData,
         offset, // 查询偏移量(起点)
@@ -141,8 +147,8 @@ class BuildController extends Controller {
             // where: {
             //   status:1
             // }
-          }
-        ]
+          },
+        ],
       });
       ctx.body = { success: true, data: all, info: '查询成功' };
     } catch (e) {

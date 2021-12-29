@@ -20,7 +20,8 @@ module.exports = app => {
     },
     status: {
       type: DataTypes.INTEGER(6),
-      allowNull: false
+      allowNull: true,
+      defaultValue: '1'
     },
     checkInDate: {
       type: DataTypes.BIGINT,
@@ -28,7 +29,7 @@ module.exports = app => {
     },
     checkOutDate: {
       type: DataTypes.BIGINT,
-      allowNull: false
+      allowNull: true
     },
     promiseFee: {
       type: DataTypes.INTEGER(11),
@@ -52,7 +53,7 @@ module.exports = app => {
     },
     otherFee: {
       type: DataTypes.STRING(255),
-      allowNull: false
+      allowNull: true
     },
     payDay: {
       type: DataTypes.INTEGER(11),
@@ -65,6 +66,26 @@ module.exports = app => {
     updatedAt: {
       type: DataTypes.DATE,
       allowNull: false
+    },
+    idNum: {
+      type: DataTypes.STRING(18),
+      allowNull: true
+    },
+    realName: {
+      type: DataTypes.STRING(20),
+      allowNull: true
+    },
+    sfzF: {
+      type: DataTypes.STRING(100),
+      allowNull: true
+    },
+    sfzB: {
+      type: DataTypes.STRING(100),
+      allowNull: true
+    },
+    phone: {
+      type: DataTypes.STRING(11),
+      allowNull: true
     }
   }, {
     tableName: 'live'

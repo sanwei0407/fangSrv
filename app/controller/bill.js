@@ -11,29 +11,28 @@ class BuildController extends Controller {
     const { ctx } = this;
     const uid = 1; // todo 以后的uid 通过token解密获取
 
-    const { roomId,monthFee,waterCount,dianCount,otherFee,dianCost,waterCost ,sDate,eDate} = ctx.request.body; // 得到post请求的body参数
+    const { roomId, monthFee, waterCount, dianCount, otherFee, dianCost, waterCost, sDate, eDate } = ctx.request.body; // 得到post请求的body参数
 
     // 数据过滤
     if (!roomId) return ctx.body = { success: false, info: 'roomid不能为空' };
-    if (!monthFee) return ctx.body = { success: false, info: '月租不能为空' };
-    if (!waterCount) return ctx.body = { success: false, info: 'waterCount不能为空' };
-    if (!dianCount) return ctx.body = { success: false, info: 'dianCount不能为空' };
-    if (!dianCost) return ctx.body = { success: false, info: 'dianCost不能为空' };
-    if (!waterCost) return ctx.body = { success: false, info: 'waterCost不能为空' };
+    if (typeof monthFee !== 'number') return ctx.body = { success: false, info: '月租不能为空' };
+    if (typeof waterCount !== 'number') return ctx.body = { success: false, info: 'waterCount不能为空' };
+    if (typeof dianCount !== 'number') return ctx.body = { success: false, info: 'dianCount不能为空' };
+    if (typeof dianCost !== 'number') return ctx.body = { success: false, info: 'dianCost不能为空' };
+    if (typeof waterCost !== 'number') return ctx.body = { success: false, info: 'waterCost不能为空' };
     if (!sDate) return ctx.body = { success: false, info: 'sDate不能为空' };
     if (!eDate) return ctx.body = { success: false, info: 'eDate不能为空' };
 
 
-
     try {
       await ctx.model.Bill.create({
-        roomId,monthFee,waterCount,dianCount,otherFee,dianCost,waterCost ,sDate,eDate,uid,
+        roomId, monthFee, waterCount, dianCount,  dianCost, waterCost, sDate, eDate, uid,otherFee:0
       });
 
       ctx.body = { success: true, info: '创建成功' };
 
     } catch (e) {
-      console.log('bill add ',e)
+      console.log('bill add ', e);
       ctx.body = { success: false, info: '添加失败' };
     }
 
@@ -103,7 +102,7 @@ class BuildController extends Controller {
   // 查询多个 指定条件
   async queryBuild() {
     const { ctx, app } = this;
-    let { page, limit, uid,roomId,payStatus,sDate,eDate, realName} = ctx.request.body;
+    let { page, limit, uid, roomId, payStatus, sDate, eDate, realName } = ctx.request.body;
     const { Op } = app.Sequelize;
 
     page = page || 1;
@@ -115,19 +114,18 @@ class BuildController extends Controller {
     if (roomId) queryData.roomId = roomId;
     if (payStatus) queryData.payStatus = payStatus;
 
-    if(sDate && !eDate) queryData.createdAt = { [Op.gte]:sDate }
-    if(eDate && !sDate) queryData.createdAt = { [Op.lte]:eData }
-    if(sDate && eDate) queryData.createdAt = { [Op.between]:[ sDate,eDate ] }
+    if (sDate && !eDate) queryData.createdAt = { [Op.gte]: sDate };
+    if (eDate && !sDate) queryData.createdAt = { [Op.lte]: eData };
+    if (sDate && eDate) queryData.createdAt = { [Op.between]: [ sDate, eDate ] };
 
     // 如果 传入有用户名
     const users = await ctx.model.User.findAll({
-      where:{
-        realName: { [Op.like]: `${realName}%` }
+      where: {
+        realName: { [Op.like]: `${realName}%` },
       },
-      attributes:['uid']
-    })
-    if(users.length) queryData.uid = { [Op.in]:users.map( item=>item.uid)  }
-    
+      attributes: [ 'uid' ],
+    });
+    if (users.length) queryData.uid = { [Op.in]: users.map(item => item.uid) };
 
 
     try {

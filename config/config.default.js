@@ -55,6 +55,46 @@ module.exports = appInfo => {
     },
   };
 
+  // 使用redis
+  config.redis = {
+    client: {
+      port: 6379, // Redis port
+      host: '127.0.0.1', // Redis host
+      password: '',
+      db: 0,
+    },
+  };
+
+  // 短信验证码;
+  config.sms = {
+    client: {
+      accessKeyId: 'LTAI5tJpYFw8vXAF1wfpt7GW', // 阿里云的AccessKey 管理
+      secretAccessKey: 'ps3dn1Ye4p1YCM3QBZpwhTK33l1iJv', // 阿里云的AccessKey 管理z中查看secret
+    },
+  };
+
+
+  //  oss
+  config.oss = {
+    client: { // 图片上传
+      accessKeyId: 'LTAI4FkGw1t2Y1u37S6VKZbQ', // 阿里云账号
+      accessKeySecret: 'BGLewysNiadBzaxyHmAuEFyu0oUmw7',
+      bucket: 'qffang',
+      endpoint: 'oss-cn-shenzhen.aliyuncs.com',
+      timeout: '80s',
+    },
+  };
+
+
+  // 启用Flie文件模式
+  config.multipart = {
+    mode: 'file',
+    fileExtensions: [ 'pdf', 'doc', 'docx', 'pptx', 'xls', 'xlsx', 'epub', 'apk' ], // 增加对 apk 扩展名的文件支持
+    fileSize: '200mb',
+    fields: 300,
+  };
+
+
   return {
     ...config,
     ...userConfig,

@@ -11,7 +11,7 @@ class BuildController extends Controller {
     const { ctx } = this;
     const uid = 1; // todo 以后的uid 通过token解密获取
 
-    const { name, address, lat, lng, streetNum, imgs, desc ,dianFee,waterFee} = ctx.request.body; // 得到post请求的body参数
+    const { name, address, lat, lng, streetNum, imgs, desc, dianFee, waterFee } = ctx.request.body; // 得到post请求的body参数
 
     // 数据过滤
     if (!name) return ctx.body = { success: false, info: 'name不能为空' };
@@ -20,13 +20,13 @@ class BuildController extends Controller {
 
     try {
       await ctx.model.Build.create({
-        name, address, lat, lng, streetNum, imgs, desc,uid,dianFee,waterFee
+        name, address, lat, lng, streetNum, imgs, desc, uid, dianFee, waterFee,
       });
 
       ctx.body = { success: true, info: '创建成功' };
 
     } catch (e) {
-      console.log('错误xcxi',e)
+      console.log('错误xcxi', e);
       ctx.body = { success: false, info: '添加失败' };
     }
 
@@ -116,7 +116,7 @@ class BuildController extends Controller {
       });
       ctx.body = { success: true, data: all, info: '查询成功' };
     } catch (e) {
-      console.log(e)
+      console.log(e);
       ctx.body = { success: false, info: '查询失败' };
     }
 

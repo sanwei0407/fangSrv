@@ -113,6 +113,7 @@ class BuildController extends Controller {
         where: queryData,
         offset, // 查询偏移量(起点)
         limit, // 查询的返回的记录
+        order:[ ['buildId','DESC'] ] // 排序
       });
       ctx.body = { success: true, data: all, info: '查询成功' };
     } catch (e) {

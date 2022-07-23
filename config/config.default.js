@@ -41,8 +41,8 @@ module.exports = appInfo => {
   // 短信验证码;
   config.sms = {
     client: {
-      accessKeyId: 'LTAI5tJpYFw8vXAF1wfpt7GW', // 阿里云的AccessKey 管理
-      secretAccessKey: 'ps3dn1Ye4p1YCM3QBZpwhTK33l1iJv', // 阿里云的AccessKey 管理z中查看secret
+      accessKeyId: 'LTAI5tJpYFw8vXAF1wfpt1GW', // 阿里云的AccessKey 管理
+      secretAccessKey: 'ps3dn1Ye4p1YCM3QBZ2pwhTK33l1iJv', // 阿里云的AccessKey 管理z中查看secret
     },
   };
 
@@ -50,8 +50,8 @@ module.exports = appInfo => {
   //  oss
   config.oss = {
     client: { // 图片上传
-      accessKeyId: 'LTAI4FkGw1t2Y1u37S6VKZbQ', // 阿里云账号
-      accessKeySecret: 'BGLewysNiadBzaxyHmAuEFyu0oUmw7',
+      accessKeyId: 'LTAI4FkGw1t2Y12u37S6VKZbQ', // 阿里云账号
+      accessKeySecret: 'BGLewysNia33dBzaxyHmAuEFyu0oUmw7',
       bucket: 'qffang',
       endpoint: 'oss-cn-shenzhen.aliyuncs.com',
       timeout: '80s',
